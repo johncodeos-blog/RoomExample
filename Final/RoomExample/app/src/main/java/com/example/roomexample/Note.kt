@@ -12,6 +12,6 @@ data class Note(
     val dateAdded: Date,
     @ColumnInfo(name = "noteText")
     val noteText: String,
-//    @ColumnInfo(name = "lastUpdate")
+//    @ColumnInfo(name = "lastUpdate", defaultValue = "0")
 //    val lastUpdate: Int
 )

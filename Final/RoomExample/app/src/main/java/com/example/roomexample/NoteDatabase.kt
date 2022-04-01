@@ -1,18 +1,18 @@
 package com.example.roomexample
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
+import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
 @Database(
     entities = [Note::class],
+//    autoMigrations = [
+//        AutoMigration (from = 1, to = 2)
+//    ],
     version = 1,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(NoteConverters::class)
 abstract class NoteDatabase : RoomDatabase() {
