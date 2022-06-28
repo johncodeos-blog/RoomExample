@@ -7,7 +7,7 @@
     tools:context=".AddNoteActivity">
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <LinearLayout
         android:id="@+id/add_note_window_bg"
         android:layout_width="300dp"
         android:layout_height="250dp"
@@ -75,5 +75,5 @@
             tools:ignore="TouchTargetSizeCheck" />
 
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
 </RelativeLayout>

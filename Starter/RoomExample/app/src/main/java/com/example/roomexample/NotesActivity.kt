@@ -4,31 +4,32 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.roomexample.databinding.ActivityNotesBinding
+import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 class NotesActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityNotesBinding
     private lateinit var adapter: NotesRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNotesBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_notes)
 
         setRecyclerView()
     }
 
 
     private fun setRecyclerView() {
-        binding.notesRecyclerview.layoutManager = LinearLayoutManager(this)
-        binding.notesRecyclerview.setHasFixedSize(true)
+        val notesRecyclerview = findViewById<RecyclerView>(R.id.notes_recyclerview)
+        notesRecyclerview.layoutManager = LinearLayoutManager(this)
+        notesRecyclerview.setHasFixedSize(true)
         adapter = NotesRVAdapter()
         adapter.setItemListener(object : RecyclerClickListener {
 
@@ -51,7 +52,7 @@ class NotesActivity : AppCompatActivity() {
                 editNoteResultLauncher.launch(intent)
             }
         })
-        binding.notesRecyclerview.adapter = adapter
+        notesRecyclerview.adapter = adapter
     }
 
     private val newNoteResultLauncher =
