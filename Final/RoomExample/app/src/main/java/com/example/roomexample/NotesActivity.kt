@@ -9,23 +9,20 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.roomexample.databinding.ActivityNotesBinding
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.*
 
 class NotesActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityNotesBinding
     private lateinit var adapter: NotesRVAdapter
 
     private val noteDatabase by lazy { NoteDatabase.getDatabase(this).noteDao() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityNotesBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_notes)
 
         setRecyclerView()
 
@@ -33,8 +30,9 @@ class NotesActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerView() {
-        binding.notesRecyclerview.layoutManager = LinearLayoutManager(this)
-        binding.notesRecyclerview.setHasFixedSize(true)
+        val notesRecyclerview = findViewById<RecyclerView>(R.id.notes_recyclerview)
+        notesRecyclerview.layoutManager = LinearLayoutManager(this)
+        notesRecyclerview.setHasFixedSize(true)
         adapter = NotesRVAdapter()
         adapter.setItemListener(object : RecyclerClickListener {
 
@@ -58,7 +56,7 @@ class NotesActivity : AppCompatActivity() {
                 editNoteResultLauncher.launch(intent)
             }
         })
-        binding.notesRecyclerview.adapter = adapter
+        notesRecyclerview.adapter = adapter
     }
 
     private fun observeNotes() {

@@ -11,35 +11,42 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
 import androidx.vectordrawable.graphics.drawable.ArgbEvaluator
-import com.example.roomexample.databinding.ActivityAddNoteBinding
 import java.util.*
 
 @SuppressLint("RestrictedApi")
 class AddNoteActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddNoteBinding
+    private lateinit var addNoteBackground: RelativeLayout
+    private lateinit var addNoteWindowBg: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddNoteBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+        setContentView(R.layout.activity_add_note)
+
+        addNoteBackground = findViewById(R.id.add_note_background)
+        addNoteWindowBg = findViewById(R.id.add_note_window_bg)
+
         setActivityStyle()
 
         val noteDateAdded = intent.getSerializableExtra("note_date_added") as? Date
         val noteTextToEdit = intent.getStringExtra("note_text")
 
+        val addNoteText = findViewById<TextView>(R.id.add_note_text)
+        addNoteText.text = noteTextToEdit ?: ""
 
-        binding.addNoteText.setText(noteTextToEdit ?: "")
-
-        binding.addNoteButton.setOnClickListener {
+        val addNoteButton = findViewById<Button>(R.id.add_note_button)
+        addNoteButton.setOnClickListener {
             // Return note text to the NotesActivity
             val data = Intent()
             data.putExtra("note_date_added", noteDateAdded)
-            data.putExtra("note_text", binding.addNoteText.text.toString())
+            data.putExtra("note_text", addNoteText.text.toString())
             setResult(Activity.RESULT_OK, data)
             // Close current window
             onBackPressed()
@@ -62,17 +69,17 @@ class AddNoteActivity : AppCompatActivity() {
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), Color.TRANSPARENT, alphaColor)
         colorAnimation.duration = 500 // milliseconds
         colorAnimation.addUpdateListener { animator ->
-            binding.addNoteBackground.setBackgroundColor(animator.animatedValue as Int)
+            addNoteBackground.setBackgroundColor(animator.animatedValue as Int)
         }
         colorAnimation.start()
 
-        binding.addNoteWindowBg.alpha = 0f
-        binding.addNoteWindowBg.animate().alpha(1f).setDuration(500)
+        addNoteWindowBg.alpha = 0f
+        addNoteWindowBg.animate().alpha(1f).setDuration(500)
             .setInterpolator(DecelerateInterpolator()).start()
 
         // Close window when you tap on the dim background
-        binding.addNoteBackground.setOnClickListener { onBackPressed() }
-        binding.addNoteWindowBg.setOnClickListener { /* Prevent activity from closing when you tap on the popup's window background */ }
+        addNoteBackground.setOnClickListener { onBackPressed() }
+        addNoteWindowBg.setOnClickListener { /* Prevent activity from closing when you tap on the popup's window background */ }
     }
 
 
@@ -83,13 +90,13 @@ class AddNoteActivity : AppCompatActivity() {
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), alphaColor, Color.TRANSPARENT)
         colorAnimation.duration = 500 // milliseconds
         colorAnimation.addUpdateListener { animator ->
-            binding.addNoteBackground.setBackgroundColor(
+            addNoteBackground.setBackgroundColor(
                 animator.animatedValue as Int
             )
         }
 
         // Fade animation for the Popup Window when you press the back button
-        binding.addNoteWindowBg.animate().alpha(0f).setDuration(500).setInterpolator(
+        addNoteWindowBg.animate().alpha(0f).setDuration(500).setInterpolator(
             DecelerateInterpolator()
         ).start()
 

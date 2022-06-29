@@ -18,7 +18,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
 import androidx.vectordrawable.graphics.drawable.ArgbEvaluator
-import com.example.roomexample.databinding.ActivityAddNoteBinding
 import java.util.*
 
 @SuppressLint("RestrictedApi")

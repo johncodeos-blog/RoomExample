@@ -1,40 +1,47 @@
 package com.example.roomexample
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.roomexample.databinding.NotesRowBinding
 
 class NotesRVAdapter : ListAdapter<Note, NotesRVAdapter.NoteHolder>(DiffCallback()) {
 
-    class NoteHolder(var viewBinding: NotesRowBinding) :
-        RecyclerView.ViewHolder(viewBinding.root)
+    class NoteHolder(view: View) : RecyclerView.ViewHolder(view)
 
     private lateinit var listener: RecyclerClickListener
     fun setItemListener(listener: RecyclerClickListener) {
         this.listener = listener
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
-        val binding =
-            NotesRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val note = NoteHolder(binding)
+        val v =
+            LayoutInflater.from(parent.context).inflate(R.layout.notes_row, parent, false)
+        val noteHolder = NoteHolder(v)
 
-        note.viewBinding.noteDelete.setOnClickListener {
-            listener.onItemRemoveClick(note.adapterPosition)
+        val noteDelete = noteHolder.itemView.findViewById<ImageView>(R.id.note_delete)
+        noteDelete.setOnClickListener {
+            listener.onItemRemoveClick(noteHolder.adapterPosition)
         }
 
-        note.viewBinding.note.setOnClickListener {
-            listener.onItemClick(note.adapterPosition)
+        val note = noteHolder.itemView.findViewById<CardView>(R.id.note)
+        note.setOnClickListener {
+            listener.onItemClick(noteHolder.adapterPosition)
         }
-        return note
+
+        return noteHolder
     }
 
     override fun onBindViewHolder(holder: NoteHolder, position: Int) {
         val currentItem = getItem(position)
-        holder.viewBinding.noteText.text = currentItem.noteText
+        val noteText = holder.itemView.findViewById<TextView>(R.id.note_text)
+        noteText.text = currentItem.noteText
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Note>() {
@@ -43,6 +50,5 @@ class NotesRVAdapter : ListAdapter<Note, NotesRVAdapter.NoteHolder>(DiffCallback
 
         override fun areContentsTheSame(oldItem: Note, newItem: Note) =
             oldItem == newItem
-
     }
 }
