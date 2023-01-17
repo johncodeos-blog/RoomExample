@@ -41,6 +41,8 @@ class NotesActivity : AppCompatActivity() {
                 val noteText = notesList[position].noteText
                 val noteDateAdded = notesList[position].dateAdded
                 val removeNote = Note(noteDateAdded, noteText)
+                notesList.removeAt(position)
+                adapter.submitList(notesList)
                 lifecycleScope.launch {
                     noteDatabase.deleteNote(removeNote)
                 }
